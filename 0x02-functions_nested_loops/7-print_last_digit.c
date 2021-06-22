@@ -7,14 +7,17 @@
  *
  * Return: always 0 (success)
 **/
-int print_last_digit(int n)
+int print_last_digit(int nld)
 {
-	int i;
+	int pld;
 
-	if (n < 0)
-		i = n * (-1);
-	else
-		i = n;
-	_putchar(i % 10 + '0');
-	return (i % 10);
+	pld = (nld % 10);
+
+	if (pld < 0)
+	{
+		pld = (-1 * pld);
+	}
+
+	_putchar(pld + '0');
+	return (pld);
 }
