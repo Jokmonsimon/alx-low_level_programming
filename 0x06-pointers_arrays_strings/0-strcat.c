@@ -22,31 +22,23 @@ int _strlen(char *str)
 
 
 /**
- *_strncat - concatinates two strings
+ *_strcat - concatinates two strings
  *@dest:destination pointer
  *@src:pointer to a string
- *@n:amount tot be concatenated
  *Return: concatinated string
  */
-char *_strncat(char *dest, char *src, int n)
+char *_strcat(char *dest, char *src)
 {
 	char *cat = dest + _strlen(dest);
-	int length;
+	int length =  _strlen(dest) + _strlen(src);
 
-	if (n > _strlen(src) + _strlen(dest))
-		length =  _strlen(dest) + _strlen(src);
-	else
-		length = _strlen(dest) + n;
-
-	while (*src && n > 0)
+	while (*src)
 	{
 		*cat += *src;
 		src++;
 		cat++;
-		n--;
 	}
-	if (n > 0)
-		*cat += '\0';
+	*cat += '\0';
 	cat -= (length);
 	*dest = *cat;
 
