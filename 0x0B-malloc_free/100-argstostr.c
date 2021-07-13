@@ -1,53 +1,50 @@
-#include <stdio.h>
 #include "holberton.h"
-
+#include <stdio.h>
+#include <stdlib.h>
 /**
- * _strlen - returns the length of a string
- * @s: string s
- * Return: length of string
+ * str_len - Gets the length of the string
+ *@av: string
+ *@a: int
+ * Return: Length of string
  */
-int _strlen(char *s)
+
+unsigned int str_len(char **av, int a)
 {
-	int len = 0;
+	unsigned int i;
 
-	while (*s++)
-		len++;
-
-	return (len);
+	for (i = 0; av[a][i] != '\0'; i++)
+		;
+	return (i);
 }
-
 /**
- * argstostr - concatenates all the arguments of your program
- * @ac: argument count
- * @av: argument vector
- * Return: concatenated string
+ * argstostr - Concatenates all arguments of the program
+ *@ac: argument count
+ *@av: 2D array
+ * Return: pointer to new string
  */
+
 char *argstostr(int ac, char **av)
 {
-	int i, j, len, total;
-	int m = 0;
-	char *ptr;
+	char *c;
+	int a, b, count = 0;
+	unsigned int k = 0;
 
-	if (!ac || !av)
+	if (ac == 0 || av == NULL)
 		return (NULL);
-	total = 0;
-	for (i = 0; i < ac; i++)
+	for (a = 0; a < ac; a++)
 	{
-		len = _strlen(av[i]) + 1;
-		total += len;
+		k += str_len(av, a);
 	}
-	ptr = malloc(sizeof(char) * total + 1);
-	if (!ptr)
+	c = malloc((k + 1 + ac) * sizeof(char));
+	if (c == NULL)
 		return (NULL);
-	for (i = 0; i < ac; i++)
+	for (a = 0; a < ac; a++)
 	{
-		len = _strlen(av[i]);
-		for (j = 0; j < len; j++, m++)
-		{
-			ptr[m] = av[i][j];
-		}
-		ptr[m++] = '\n';
+		for (b = 0; (c[count] = av[a][b]) != '\0'; b++)
+			count++;
+		c[count] = '\n';
+		count++;
 	}
-	ptr[m] = '\0';
-	return (ptr);
+	c[count] = '\0';
+	return (c);
 }
