@@ -1,50 +1,58 @@
 #include "holberton.h"
-#include <stdio.h>
 #include <stdlib.h>
 /**
- * str_len - Gets the length of the string
- *@av: string
- *@a: int
- * Return: Length of string
+ * _strlen - returns the lenght of a string
+ * @s: pointer to s
+ *
+ * Return: 0 on success
+ *
  */
-
-unsigned int str_len(char **av, int a)
+int _strlen(char *s)
 {
-	unsigned int i;
+	int count = 0;
 
-	for (i = 0; av[a][i] != '\0'; i++)
-		;
-	return (i);
+	if (s != '\0')
+	{
+		while (*(s + count) != '\0')
+			count++;
+	}
+	return (count);
 }
 /**
- * argstostr - Concatenates all arguments of the program
- *@ac: argument count
- *@av: 2D array
+ * argstostr - concatenates all the arguments of your program
+ * @ac: number of args
+ * @av: arguments
+ *
  * Return: pointer to new string
  */
-
 char *argstostr(int ac, char **av)
 {
-	char *c;
-	int a, b, count = 0;
-	unsigned int k = 0;
+	int i, j, k, len, total_len;
+	char *new_str;
 
 	if (ac == 0 || av == NULL)
 		return (NULL);
-	for (a = 0; a < ac; a++)
+	len = 0;
+	total_len = 0;
+	for (i = 0; i < ac; i++)
 	{
-		k += str_len(av, a);
+		len = _strlen(av[i]);
+		total_len += len + 1;
 	}
-	c = malloc((k + 1 + ac) * sizeof(char));
-	if (c == NULL)
+	new_str = malloc(sizeof(char) * (total_len + 1));
+	if (new_str == NULL)
 		return (NULL);
-	for (a = 0; a < ac; a++)
+	k = 0;
+	for (i = 0; i < ac; i++)
 	{
-		for (b = 0; (c[count] = av[a][b]) != '\0'; b++)
-			count++;
-		c[count] = '\n';
-		count++;
+		for (j = 0; av[i][j] != '\0'; j++)
+		{
+			new_str[k] = av[i][j];
+			k++;
+		}
+		new_str[k] = '\n';
+		k++;
 	}
-	c[count] = '\0';
-	return (c);
+	new_str[k] = '\0';
+	return (new_str);
 }
