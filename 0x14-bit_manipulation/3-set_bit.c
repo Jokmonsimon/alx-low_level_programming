@@ -1,39 +1,18 @@
-#include "holberton.h"
+
+#include "main.h"
 
 /**
- * powX- powers a number b to the p's power
- * @b: base
- * @p: power
- * Return: return b to the power of a
- */
-unsigned long int powX(int b, int p)
-{
-	unsigned long int ans = 1;
-
-	while (p)
-	{
-		ans *= b;
-		p--;
-	}
-	return (ans);
-}
-
-/**
- * set_bit - prints the binary representation of a number
- * @n: input integer
- * @index: returns the value of a bit at a given index
- * Return: 1 for ssucess -1 for failure
+ * set_bit - sets a bit at a given index to 1
+ * @n: pointer to the number to change
+ * @index: index of the bit to set to 1
+ *
+ * Return: 1 for success, -1 for failure
  */
 int set_bit(unsigned long int *n, unsigned int index)
 {
-	unsigned long int test;
-
-	if (index > sizeof(n) * BIT_SIZE - 1)
+	if (index > 63)
 		return (-1);
 
-
-	test = powX(2, index);
-	*n = *n | test;
+	*n = ((1UL << index) | *n);
 	return (1);
-
 }
