@@ -1,9 +1,9 @@
-#include "holberton.h"
+#include "main.h"
 /**
  * print_times_table - prints times table of given size
  * @n: table size has to be 0 to 15
  *
- * holberton.h: created header
+ * main.h: created header
  *
  * Return: none
 **/
