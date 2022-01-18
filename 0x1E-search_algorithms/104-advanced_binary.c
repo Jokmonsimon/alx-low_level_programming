@@ -1,81 +1,72 @@
 #include "search_algos.h"
-
+#include <unistd.h>
 /**
- *  recursive_bsearch - helper function using recursion
+ * print_array - print the current part of the array being searched
  *
- * @array: ptr to array
- * @size: number of elements in array
- * @value: value at index
- * @index: index of mid prior to recursive call
- *
- * Return: first index where value is, otherwise -1 if no value or array NULL
+ * @array: pointer to the first element of the array
+ * @first: index of the first element to print
+ * @last: index of the last element to print
  */
-
-int recursive_bsearch(int *array, size_t size, int value, unsigned int index)
+void print_array(int *array, size_t first, size_t last)
 {
-	unsigned int lo = 0;
-	unsigned int hi = size - 1;
-	unsigned int mid;
-
-	if (size == 0)
-		return (-1);
-
-	printf("Searching in array: ");
-	print_array(array, size);
-
-	if (lo > hi)
-		return (-1);
-	if (size % 2 == 0)
-		mid = (size / 2) - 1;
-	else
-		mid = size / 2;
-	if (array[mid] == value)
-		return (mid + index);
-	else if (array[mid] > value)
-		return (recursive_bsearch(array, mid, value, index));
-	else if (array[mid] < value)
-		return (recursive_bsearch(array + mid + 1, size - mid - 1,
-					  value, index + mid + 1));
-	return (-2);
-}
-
-/**
- *  advanced_binary - searches for value in array ints with Binary search algo
- *
- * @array: ptr to array
- * @size: number of elements in array
- * @value: value at index
- *
- * Return: first index where value is, otherwise -1 if no value or array NULL
- */
-
-int advanced_binary(int *array, size_t size, int value)
-{
-	unsigned int index = 0;
-
-	if (!array)
-		return (-1);
-
-	return (recursive_bsearch(array, size, value, index));
-}
-
-/**
- * print_array - Prints an array of integers
- *
- * @array: The array to be printed
- * @size: Number of elements in @array
- */
-void print_array(int *array, size_t size)
-{
-	size_t i;
-
-	i = 0;
-	while (array && i < size)
+	printf("Searching in array: %d", array[first]);
+	first++;
+	while (first <= last)
 	{
-		if (i > 0)
-			printf(", ");
-		printf("%d", array[i]);
-		++i;
+		printf(", %d", array[first]);
+		first++;
 	}
 	printf("\n");
+}
+
+/**
+ * advanced_binary_search - searches for a value in a sorted array of integers
+ * using the advanced_binary search algorithm
+ *
+ * @array: pointer to the first element of the array to search in
+ * @start: first element
+ * @end: number of elements in array
+ * @value: value to search for
+ *
+ * Return: first position of value in array
+ */
+
+int advanced_binary_search(int *array, size_t start, size_t end, int value)
+{
+	size_t mid;
+
+	if (end >= start)
+	{
+		print_array(array, start, end);
+
+		if (array[start] == value)
+			return (start);
+
+		mid = (start + end) / 2;
+
+		if (array[mid] == value && array[mid - 1] != value)
+			return (mid);
+		if (array[mid] >= value)
+			return (advanced_binary_search(array, start, mid, value));
+		if (array[mid] < value)
+			return (advanced_binary_search(array, mid + 1, end, value));
+	}
+	return (-1);
+}
+
+/**
+ * advanced_binary - searches for a value in a sorted array of integers
+ * using the advanced_binary search algorithm
+ *
+ * @array: pointer to the first element of the array to search in
+ * @size: number of elements in array
+ * @value: value to search for
+ *
+ * Return: index of value or (-1) if value does not exist
+*/
+int advanced_binary(int *array, size_t size, int value)
+{
+	if (size > 0)
+		return (advanced_binary_search(array, 0, size - 1, value));
+	return (-1);
 }
