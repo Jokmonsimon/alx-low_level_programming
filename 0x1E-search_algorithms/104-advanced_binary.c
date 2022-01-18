@@ -1,73 +1,81 @@
 #include "search_algos.h"
 
 /**
-  * print_array - print array with limits in l and r
-  * @array: set of numbers
-  * @l: left limit
-  * @r: right limit
-  * Return: nothing
-  */
-void print_array(int *array, size_t l, size_t r)
-{
-	printf("Searching in array: ");
-	for (l = l; l < r; l++)
-		printf("%d, ", array[l]);
-	printf("%d\n", array[l]);
-}
+ *  recursive_bsearch - helper function using recursion
+ *
+ * @array: ptr to array
+ * @size: number of elements in array
+ * @value: value at index
+ * @index: index of mid prior to recursive call
+ *
+ * Return: first index where value is, otherwise -1 if no value or array NULL
+ */
 
-/**
-  * bi_se - search the first ocurrency of a value in the array recursively
-  * @array: set of numbers
-  * @l: left limit
-  * @r: right limit
-  * @value: value to search
-  * Return: return the first index located otherwise -1
-  */
-size_t bi_se(int *array, size_t l, size_t r, int value)
+int recursive_bsearch(int *array, size_t size, int value, unsigned int index)
 {
-	int mid = 0, index = -1;
+	unsigned int lo = 0;
+	unsigned int hi = size - 1;
+	unsigned int mid;
 
-	if (l > r)
+	if (size == 0)
 		return (-1);
 
-	print_array(array, l, r);
-	mid = (l + r) / 2;
-	if (array[mid] < value)
-	{
-		l = mid + 1;
-		index = bi_se(array, l, r, value);
-	}
-	else if (array[mid] > value)
-	{
-		r = mid - 1;
-		index = bi_se(array, l, r, value);
-	}
-	else
-		if (mid - 1 >= 0 && array[mid - 1] == array[mid])
-			index = bi_se(array, l, mid, value);
-		else
-			index = mid;
+	printf("Searching in array: ");
+	print_array(array, size);
 
-	return (index);
+	if (lo > hi)
+		return (-1);
+	if (size % 2 == 0)
+		mid = (size / 2) - 1;
+	else
+		mid = size / 2;
+	if (array[mid] == value)
+		return (mid + index);
+	else if (array[mid] > value)
+		return (recursive_bsearch(array, mid, value, index));
+	else if (array[mid] < value)
+		return (recursive_bsearch(array + mid + 1, size - mid - 1,
+					  value, index + mid + 1));
+	return (-2);
 }
 
 /**
-  * advanced_binary - search the first ocurrency of a value in the array
-  * @array: set of numbers
-  * @size: size of the array
-  * @value: value to search
-  * Return: return the first index located otherwise -1
-  */
+ *  advanced_binary - searches for value in array ints with Binary search algo
+ *
+ * @array: ptr to array
+ * @size: number of elements in array
+ * @value: value at index
+ *
+ * Return: first index where value is, otherwise -1 if no value or array NULL
+ */
+
 int advanced_binary(int *array, size_t size, int value)
 {
-	int index = -1;
+	unsigned int index = 0;
 
-	if (array == NULL || size == 0)
+	if (!array)
 		return (-1);
 
-	index = bi_se(array, 0, size - 1, value);
+	return (recursive_bsearch(array, size, value, index));
+}
 
-	if (index >= 0)
-		return (index);
-	return (-1);
+/**
+ * print_array - Prints an array of integers
+ *
+ * @array: The array to be printed
+ * @size: Number of elements in @array
+ */
+void print_array(int *array, size_t size)
+{
+	size_t i;
+
+	i = 0;
+	while (array && i < size)
+	{
+		if (i > 0)
+			printf(", ");
+		printf("%d", array[i]);
+		++i;
+	}
+	printf("\n");
 }
